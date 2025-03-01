@@ -1,4 +1,4 @@
-﻿using Fasetto.Word;
+using Fasetto.Word;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -411,7 +411,15 @@ public partial class GrabFrame : Window
         if (historyItem is not null)
             await LoadContentFromHistory(historyItem);
     }
-
+// Add this method to the GrabFrame.xaml.cs file
+private void GrabFrameWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+{
+    if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.None)
+    {
+        LaunchFullscreenGrabVideo();
+        e.Handled = true;
+    }
+}
     public void GrabFrame_Unloaded(object sender, RoutedEventArgs e)
     {
         Activated -= GrabFrameWindow_Activated;
@@ -461,7 +469,7 @@ public partial class GrabFrame : Window
         RectanglesCanvas.ContextMenu.IsOpen = false;
         FreezeGrabFrame();
 
-        List<WordBorder> selectedWordBorders = [.. wordBorders.Where(w => w.IsSelected).OrderBy(o => o.Left)];
+        List<WordBorder> selectedWordBorders = [.. wordBorders.Where(w => w.IsSelected)];
 
         if (selectedWordBorders.Count < 2)
             return;
@@ -1397,7 +1405,9 @@ public partial class GrabFrame : Window
         if (scrollBehavior == ScrollBehavior.Zoom)
         {
             if (!IsFreezeMode)
+            {
                 FreezeGrabFrame();
+            }
 
             return;
         }
@@ -1516,8 +1526,8 @@ public partial class GrabFrame : Window
 
         foreach (WordBorder movingWb in movingWordBordersDictionary.Keys)
         {
-            Rect previousSize = movingWordBordersDictionary[movingWb];
-            MoveResizeWordBorder(movingPoint, movingWb, previousSize);
+            Rect originalSize = movingWordBordersDictionary[movingWb];
+            MoveResizeWordBorder(movingPoint, movingWb, originalSize);
         }
     }
 
@@ -2678,5 +2688,15 @@ new GrabFrameOperationArgs()
         DefaultSettings.Save();
     }
 
+    private void VideoModeBTN_Click(object sender, RoutedEventArgs e)
+    {
+        LaunchFullscreenGrabVideo();
+    }
+
+    private void LaunchFullscreenGrabVideo()
+    {
+        FullscreenGrabVideo fullscreenGrabVideo = new();
+        fullscreenGrabVideo.Show();
+    }
     #endregion Methods
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -55,42 +55,28 @@ public partial class GeneralSettings : Page
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        AppTheme appTheme = Enum.Parse<AppTheme>(DefaultSettings.AppTheme, true);
-        switch (appTheme)
-        {
-            case AppTheme.System:
-                SystemThemeRdBtn.IsChecked = true;
-                break;
-            case AppTheme.Dark:
-                DarkThemeRdBtn.IsChecked = true;
-                break;
-            case AppTheme.Light:
-                LightThemeRdBtn.IsChecked = true;
-                break;
-            default:
-                SystemThemeRdBtn.IsChecked = true;
-                break;
-        }
+        if (DefaultSettings.AppTheme == AppTheme.System.ToString())
+            SystemThemeRdBtn.IsChecked = true;
+        else if (DefaultSettings.AppTheme == AppTheme.Light.ToString())
+            LightThemeRdBtn.IsChecked = true;
+        else if (DefaultSettings.AppTheme == AppTheme.Dark.ToString())
+            DarkThemeRdBtn.IsChecked = true;
 
-        TextGrabMode defaultLaunchSetting = Enum.Parse<TextGrabMode>(DefaultSettings.DefaultLaunch, true);
-        switch (defaultLaunchSetting)
-        {
-            case TextGrabMode.Fullscreen:
-                FullScreenRDBTN.IsChecked = true;
-                break;
-            case TextGrabMode.GrabFrame:
-                GrabFrameRDBTN.IsChecked = true;
-                break;
-            case TextGrabMode.EditText:
-                EditTextRDBTN.IsChecked = true;
-                break;
-            case TextGrabMode.QuickLookup:
-                QuickLookupRDBTN.IsChecked = true;
-                break;
-            default:
-                FullScreenRDBTN.IsChecked = true;
-                break;
-        }
+        string defaultLaunch = DefaultSettings.FirstWindowToShow;
+
+        if (string.IsNullOrWhiteSpace(defaultLaunch))
+            defaultLaunch = FirstWindow.GrabFrame.ToString();
+
+        if (defaultLaunch == FirstWindow.Fullscreen.ToString())
+            FullScreenRDBTN.IsChecked = true;
+        else if (defaultLaunch == FirstWindow.GrabFrame.ToString())
+            GrabFrameRDBTN.IsChecked = true;
+        else if (defaultLaunch == FirstWindow.EditText.ToString())
+            EditTextRDBTN.IsChecked = true;
+        else if (defaultLaunch == FirstWindow.QuickSimpleLookup.ToString())
+            QuickLookupRDBTN.IsChecked = true;
+        else if (defaultLaunch == FirstWindow.FullscreenGrabVideo.ToString())
+            VideoModeRDBTN.IsChecked = true;
 
         if (AppUtilities.IsPackaged())
         {
@@ -170,7 +156,7 @@ public partial class GeneralSettings : Page
         if (!settingsSet)
             return;
 
-        DefaultSettings.DefaultLaunch = TextGrabMode.Fullscreen.ToString();
+        DefaultSettings.FirstWindowToShow = FirstWindow.Fullscreen.ToString();
     }
 
     private void GrabFrameRDBTN_Checked(object sender, RoutedEventArgs e)
@@ -178,7 +164,7 @@ public partial class GeneralSettings : Page
         if (!settingsSet)
             return;
 
-        DefaultSettings.DefaultLaunch = TextGrabMode.GrabFrame.ToString();
+        DefaultSettings.FirstWindowToShow = FirstWindow.GrabFrame.ToString();
     }
 
     private void EditTextRDBTN_Checked(object sender, RoutedEventArgs e)
@@ -186,7 +172,7 @@ public partial class GeneralSettings : Page
         if (!settingsSet)
             return;
 
-        DefaultSettings.DefaultLaunch = TextGrabMode.EditText.ToString();
+        DefaultSettings.FirstWindowToShow = FirstWindow.EditText.ToString();
     }
 
     private void QuickLookupRDBTN_Checked(object sender, RoutedEventArgs e)
@@ -194,7 +180,17 @@ public partial class GeneralSettings : Page
         if (!settingsSet)
             return;
 
-        DefaultSettings.DefaultLaunch = TextGrabMode.QuickLookup.ToString();
+        DefaultSettings.FirstWindowToShow = FirstWindow.QuickSimpleLookup.ToString();
+        DefaultSettings.Save();
+    }
+
+    private void VideoModeRDBTN_Checked(object sender, RoutedEventArgs e)
+    {
+        if (!settingsSet)
+            return;
+
+        DefaultSettings.FirstWindowToShow = FirstWindow.FullscreenGrabVideo.ToString();
+        DefaultSettings.Save();
     }
 
     private void RunInBackgroundChkBx_Checked(object sender, RoutedEventArgs e)

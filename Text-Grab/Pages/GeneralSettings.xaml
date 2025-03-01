@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="Text_Grab.Pages.GeneralSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -67,10 +67,10 @@
                     Style="{StaticResource TextBodyNormal}"
                     Text="- Joe" />
                 <ui:HyperlinkButton NavigateUri="https://github.com/TheJoeFin/Text-Grab/issues">
-                    🌐 https://github.com/TheJoeFin/Text-Grab/issues
+                    https://github.com/TheJoeFin/Text-Grab/issues
                 </ui:HyperlinkButton>
                 <ui:HyperlinkButton NavigateUri="mailto:joe@JoeFinApps.com">
-                    📧 joe@JoeFinApps.com
+                    joe@JoeFinApps.com
                 </ui:HyperlinkButton>
             </StackPanel>
         </Border>
@@ -167,6 +167,15 @@
             GroupName="DefaultLaunch">
             <TextBlock Margin="0,-10,0,0" Style="{StaticResource TextBodyNormal}">
                 Quick Simple Lookup
+            </TextBlock>
+        </RadioButton>
+        <RadioButton
+            x:Name="VideoModeRDBTN"
+            VerticalContentAlignment="Center"
+            Checked="VideoModeRDBTN_Checked"
+            GroupName="DefaultLaunch">
+            <TextBlock Margin="0,-10,0,0" Style="{StaticResource TextBodyNormal}">
+                Full-Screen Grab Video Mode
             </TextBlock>
         </RadioButton>
 

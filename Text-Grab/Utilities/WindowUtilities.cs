@@ -123,46 +123,24 @@ public static class WindowUtilities
 
     public static void LaunchFullScreenGrabVideo(TextBox? destinationTextBox = null)
     {
-        DisplayInfo[] allScreens = DisplayInfo.AllDisplayInfos;
-        WindowCollection allWindows = Application.Current.Windows;
-
-        List<FullscreenGrabVideo> allFullscreenGrabVideo = new();
-
-        int numberOfScreens = allScreens.Count();
-
-        foreach (Window window in allWindows)
-            if (window is FullscreenGrabVideo grab)
-                allFullscreenGrabVideo.Add(grab);
-
-        int numberOfFullscreenGrabWindowsToCreate = numberOfScreens - allFullscreenGrabVideo.Count;
-
-        for (int i = 0; i < numberOfFullscreenGrabWindowsToCreate; i++)
+        try
         {
-            allFullscreenGrabVideo.Add(new FullscreenGrabVideo());
+            // Create a single window instead of one per screen
+            FullscreenGrabVideo videoWindow = new FullscreenGrabVideo();
+            
+            // Set basic properties
+            videoWindow.Width = 800;
+            videoWindow.Height = 600;
+            videoWindow.DestinationTextBox = destinationTextBox;
+            videoWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            
+            // Show the window
+            videoWindow.Show();
+            videoWindow.Activate();
         }
-
-        int count = 0;
-
-        double sideLength = 40;
-
-        foreach (DisplayInfo screen in allScreens)
+        catch (Exception ex)
         {
-            FullscreenGrabVideo fullScreenGrabVideo = allFullscreenGrabVideo[count];
-            fullScreenGrabVideo.WindowStartupLocation = WindowStartupLocation.Manual;
-            fullScreenGrabVideo.Width = sideLength;
-            fullScreenGrabVideo.Height = sideLength;
-            fullScreenGrabVideo.DestinationTextBox = destinationTextBox;
-            fullScreenGrabVideo.WindowState = WindowState.Normal;
-
-            Point screenCenterPoint = screen.ScaledCenterPoint();
-
-            fullScreenGrabVideo.Left = screenCenterPoint.X - (sideLength / 2);
-            fullScreenGrabVideo.Top = screenCenterPoint.Y - (sideLength / 2);
-
-            fullScreenGrabVideo.Show();
-            fullScreenGrabVideo.Activate();
-
-            count++;
+            MessageBox.Show($"Error launching Full Screen Grab Video: {ex.Message}\n\nStack Trace: {ex.StackTrace}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -252,9 +230,9 @@ public static class WindowUtilities
         foreach (Window window in allWindows)
         {
             if (window is FullscreenGrab fsg)
-                fsg.KeyPressed(key, isActive);
+                fsg.KeyPressed(key, isActive ?? true);
             else if (window is FullscreenGrabVideo fsgv)
-                fsgv.KeyPressed(key, isActive);
+                fsgv.KeyPressed(key, isActive ?? true);
         }
     }
 

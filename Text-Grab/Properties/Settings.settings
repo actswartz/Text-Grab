@@ -11,6 +11,9 @@
     <Setting Name="DefaultLaunch" Type="System.String" Scope="User">
       <Value Profile="(Default)">Fullscreen</Value>
     </Setting>
+    <Setting Name="FirstWindowToShow" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GrabFrame</Value>
+    </Setting>
     <Setting Name="CorrectErrors" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -119,8 +122,8 @@
     <Setting Name="FsgSendEtwToggle" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="VideoModeInterval" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2.0</Value>
+    <Setting Name="VideoModeInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2000</Value>
     </Setting>
     <Setting Name="UseHistory" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

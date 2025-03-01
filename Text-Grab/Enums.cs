@@ -73,6 +73,15 @@ public enum TextGrabMode
     FullscreenVideo = 4
 }
 
+public enum FirstWindow
+{
+    Fullscreen = 0,
+    GrabFrame = 1,
+    EditText = 2,
+    QuickSimpleLookup = 3,
+    FullscreenGrabVideo = 4
+}
+
 public enum VirtualKeyCodes : short
 {
     LeftButton = 0x01,
