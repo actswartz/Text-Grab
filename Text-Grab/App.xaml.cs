@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using RegistryUtils;
 using System;
@@ -60,6 +60,9 @@ public partial class App : System.Windows.Application
             case TextGrabMode.QuickLookup:
                 QuickSimpleLookup quickSimpleLookup = new();
                 quickSimpleLookup.Show();
+                break;
+            case TextGrabMode.FullscreenVideo:
+                WindowUtilities.LaunchFullScreenGrabVideo();
                 break;
             default:
                 EditTextWindow editTextWindow = new();

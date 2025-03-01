@@ -1,4 +1,4 @@
-﻿using Dapplo.Windows.User32;
+using Dapplo.Windows.User32;
 using Fasetto.Word;
 using System;
 using System.Collections.Generic;
@@ -121,6 +121,51 @@ public static class WindowUtilities
         }
     }
 
+    public static void LaunchFullScreenGrabVideo(TextBox? destinationTextBox = null)
+    {
+        DisplayInfo[] allScreens = DisplayInfo.AllDisplayInfos;
+        WindowCollection allWindows = Application.Current.Windows;
+
+        List<FullscreenGrabVideo> allFullscreenGrabVideo = new();
+
+        int numberOfScreens = allScreens.Count();
+
+        foreach (Window window in allWindows)
+            if (window is FullscreenGrabVideo grab)
+                allFullscreenGrabVideo.Add(grab);
+
+        int numberOfFullscreenGrabWindowsToCreate = numberOfScreens - allFullscreenGrabVideo.Count;
+
+        for (int i = 0; i < numberOfFullscreenGrabWindowsToCreate; i++)
+        {
+            allFullscreenGrabVideo.Add(new FullscreenGrabVideo());
+        }
+
+        int count = 0;
+
+        double sideLength = 40;
+
+        foreach (DisplayInfo screen in allScreens)
+        {
+            FullscreenGrabVideo fullScreenGrabVideo = allFullscreenGrabVideo[count];
+            fullScreenGrabVideo.WindowStartupLocation = WindowStartupLocation.Manual;
+            fullScreenGrabVideo.Width = sideLength;
+            fullScreenGrabVideo.Height = sideLength;
+            fullScreenGrabVideo.DestinationTextBox = destinationTextBox;
+            fullScreenGrabVideo.WindowState = WindowState.Normal;
+
+            Point screenCenterPoint = screen.ScaledCenterPoint();
+
+            fullScreenGrabVideo.Left = screenCenterPoint.X - (sideLength / 2);
+            fullScreenGrabVideo.Top = screenCenterPoint.Y - (sideLength / 2);
+
+            fullScreenGrabVideo.Show();
+            fullScreenGrabVideo.Activate();
+
+            count++;
+        }
+    }
+
     public static Point GetCenterPoint(this DisplayInfo screen)
     {
         Rect screenRect = screen.Bounds;
@@ -172,6 +217,18 @@ public static class WindowUtilities
 
                 fsg.Close();
             }
+            else if (window is FullscreenGrabVideo fsgv)
+            {
+                if (!string.IsNullOrWhiteSpace(fsgv.TextFromOCR))
+                    stringFromOCR = fsgv.TextFromOCR;
+
+                if (fsgv.DestinationTextBox is not null)
+                {
+                    isFromEditWindow = true;
+                }
+
+                fsgv.Close();
+            }
         }
 
         if (AppUtilities.TextGrabSettings.TryInsert
@@ -193,8 +250,12 @@ public static class WindowUtilities
             CloseAllFullscreenGrabs();
 
         foreach (Window window in allWindows)
+        {
             if (window is FullscreenGrab fsg)
                 fsg.KeyPressed(key, isActive);
+            else if (window is FullscreenGrabVideo fsgv)
+                fsgv.KeyPressed(key, isActive);
+        }
     }
 
     internal static async Task TryInsertString(string stringToInsert)

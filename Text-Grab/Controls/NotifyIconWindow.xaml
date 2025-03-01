@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="Text_Grab.Controls.NotifyIconWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -69,6 +69,14 @@
                         Header="Fullscreen Grab">
                         <MenuItem.Icon>
                             <wpfui:SymbolIcon Symbol="SlideAdd24" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        x:Name="FullscreenGrabVideoMenuItem"
+                        Click="FullscreenGrabVideoMenuItem_Click"
+                        Header="Fullscreen Grab Video">
+                        <MenuItem.Icon>
+                            <wpfui:SymbolIcon Symbol="VideoClip24" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem

@@ -1,4 +1,4 @@
-﻿namespace Text_Grab;
+namespace Text_Grab;
 
 public enum AddRemove
 {
@@ -69,8 +69,10 @@ public enum TextGrabMode
     Fullscreen = 0,
     GrabFrame = 1,
     EditText = 2,
-    QuickLookup = 3
+    QuickLookup = 3,
+    FullscreenVideo = 4
 }
+
 public enum VirtualKeyCodes : short
 {
     LeftButton = 0x01,

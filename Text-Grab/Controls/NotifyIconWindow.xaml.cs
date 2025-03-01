@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using Text_Grab.Services;
 using Text_Grab.Utilities;
 using Text_Grab.Views;
@@ -45,6 +45,11 @@ public partial class NotifyIconWindow : Window
     private void FullscreenGrabMenuItem_Click(object sender, RoutedEventArgs e)
     {
         WindowUtilities.LaunchFullScreenGrab();
+    }
+
+    private void FullscreenGrabVideoMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        WindowUtilities.LaunchFullScreenGrabVideo();
     }
 
     private async void PreviousRegionMenuItem_Click(object sender, RoutedEventArgs e)
